@@ -90,6 +90,7 @@ function login(bduss) {
                 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Safari/604.1'
             };
             const response = yield axios_1.default.get(url, {
+                maxRedirects: 0,
                 headers: headers
             });
             if (!response.data || response.data.no !== 0 || response.data.error !== 'success') {
@@ -125,6 +126,7 @@ function getTiebaList(bduss) {
                 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Safari/604.1'
             };
             const response = yield axios_1.default.get(url, {
+                maxRedirects: 0,
                 headers: headers
             });
             if (!response.data || response.data.error !== 'success') {
@@ -145,18 +147,21 @@ function getTiebaList(bduss) {
 function getTbs(bduss) {
     return __awaiter(this, void 0, void 0, function* () {
         return withRetry(() => __awaiter(this, void 0, void 0, function* () {
-            const url = 'https://tieba.baidu.com/dc/common/tbs';
+            var _a, _b;
+            // dc/common/tbs 会将 HTTPS 降级到 HTTP；此接口直接通过 HTTPS 返回 TBS。
+            const url = 'https://tieba.baidu.com/mo/q/newmoindex';
             const headers = {
                 'Cookie': `BDUSS=${bduss}`,
                 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Safari/604.1'
             };
             const response = yield axios_1.default.get(url, {
+                maxRedirects: 0,
                 headers: headers
             });
-            if (!response.data || !response.data.tbs) {
+            if (((_a = response.data) === null || _a === void 0 ? void 0 : _a.error) !== 'success' || !((_b = response.data.data) === null || _b === void 0 ? void 0 : _b.tbs)) {
                 throw new Error('获取tbs失败');
             }
-            return response.data.tbs;
+            return response.data.data.tbs;
         }), '获取TBS参数');
     });
 }
@@ -190,6 +195,7 @@ function signTieba(bduss, tiebaName, tbs, index) {
                 ie: 'utf-8'
             };
             const response = yield axios_1.default.post(url, (0, utils_1.toQueryString)(data), {
+                maxRedirects: 0,
                 headers: headers
             });
             if (!response.data) {

@@ -9,8 +9,7 @@ import {
   UserInfo, 
   TiebaInfo, 
   TiebaList, 
-  SignResult, 
-  TbsResult 
+  SignResult
 } from './types/apiService.types';
 
 // 辅助函数：延时等待
@@ -92,6 +91,7 @@ export async function login(bduss: string): Promise<UserInfo> {
     };
     
     const response = await axios.get(url, {
+      maxRedirects: 0,
       headers: headers
     });
     
@@ -130,6 +130,7 @@ export async function getTiebaList(bduss: string): Promise<TiebaList> {
     };
     
     const response = await axios.get(url, {
+      maxRedirects: 0,
       headers: headers
     });
     
@@ -153,21 +154,23 @@ export async function getTiebaList(bduss: string): Promise<TiebaList> {
  */
 export async function getTbs(bduss: string): Promise<string> {
   return withRetry(async () => {
-    const url = 'https://tieba.baidu.com/dc/common/tbs';
+    // dc/common/tbs 会将 HTTPS 降级到 HTTP；此接口直接通过 HTTPS 返回 TBS。
+    const url = 'https://tieba.baidu.com/mo/q/newmoindex';
     const headers = {
       'Cookie': `BDUSS=${bduss}`,
       'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Safari/604.1'
     };
     
-    const response = await axios.get<TbsResult>(url, {
+    const response = await axios.get<{ error?: string; data?: { tbs?: string } }>(url, {
+      maxRedirects: 0,
       headers: headers
     });
     
-    if (!response.data || !response.data.tbs) {
+    if (response.data?.error !== 'success' || !response.data.data?.tbs) {
       throw new Error('获取tbs失败');
     }
     
-    return response.data.tbs;
+    return response.data.data.tbs;
   }, '获取TBS参数');
 }
 
@@ -202,6 +205,7 @@ export async function signTieba(bduss: string, tiebaName: string, tbs: string, i
     };
     
     const response = await axios.post<SignResult>(url, toQueryString(data), {
+      maxRedirects: 0,
       headers: headers
     });
     
