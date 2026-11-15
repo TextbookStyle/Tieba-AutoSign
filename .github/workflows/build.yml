@@ -27,7 +27,7 @@ jobs:
     - name: 设置Node.js环境
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '24'
         cache: 'npm'
         
     - name: 安装依赖
@@ -49,4 +49,4 @@ jobs:
           echo "开始推送更改..."
           git push
           echo "✅ 编译后的文件已提交"
-        fi 
+        fi

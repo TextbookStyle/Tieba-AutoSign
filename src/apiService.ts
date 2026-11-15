@@ -153,7 +153,7 @@ export async function getTiebaList(bduss: string): Promise<TiebaList> {
  */
 export async function getTbs(bduss: string): Promise<string> {
   return withRetry(async () => {
-    const url = 'http://tieba.baidu.com/dc/common/tbs';
+    const url = 'https://tieba.baidu.com/dc/common/tbs';
     const headers = {
       'Cookie': `BDUSS=${bduss}`,
       'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Safari/604.1'
@@ -211,4 +211,4 @@ export async function signTieba(bduss: string, tiebaName: string, tbs: string, i
     
     return response.data;
   }, `签到操作`);
-} 
+}

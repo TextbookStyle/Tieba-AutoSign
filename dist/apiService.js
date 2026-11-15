@@ -145,7 +145,7 @@ function getTiebaList(bduss) {
 function getTbs(bduss) {
     return __awaiter(this, void 0, void 0, function* () {
         return withRetry(() => __awaiter(this, void 0, void 0, function* () {
-            const url = 'http://tieba.baidu.com/dc/common/tbs';
+            const url = 'https://tieba.baidu.com/dc/common/tbs';
             const headers = {
                 'Cookie': `BDUSS=${bduss}`,
                 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Safari/604.1'

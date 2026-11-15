@@ -1,10 +1,7 @@
 name: 自动同步上游仓库
 
 on:
-  schedule:
-    # 每天凌晨2点执行（UTC时间，对应北京时间10点）
-    - cron: '0 2 * * *'
-  # 允许手动触发
+  # 手动同步上游，保留本仓库的部署修正。
   workflow_dispatch:
 
 jobs:
@@ -89,4 +86,4 @@ jobs:
         run: |
           echo "🎉 您的仓库已与上游仓库同步完成！"
           echo "📝 最新提交信息："
-          git log -1 --pretty=format:"%h - %an: %s" 
+          git log -1 --pretty=format:"%h - %an: %s"
